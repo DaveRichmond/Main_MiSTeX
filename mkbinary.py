@@ -16,8 +16,11 @@ import subprocess
 try:
     i = sys.argv[2]
     o = sys.argv[1]
+    ld = sys.argv[3]
+    arch = sys.argv[4]
 except:
     sys.exit(-1)
+
 
 # generate absolute paths and raw filenames from our arguments
 infile = str(pathlib.Path(i).parts[-1])
@@ -25,8 +28,22 @@ indir = pathlib.Path(i).resolve().parent
 outfile = str(pathlib.Path(o).parts[-1])
 outdir = pathlib.Path(o).resolve().parent
 
+if ld.endswith("cc"):
+    import re
+    ld = str(re.sub("g?cc$", "ld", ld))
+
+if not ld.startswith("/"): # if we've been given an absolute path, don't look it up on $PATH
+    import shutil
+    ld = shutil.which(ld)
+
+print("Linker: {}".format(ld))
+if not pathlib.Path(ld).exists():
+    print("ld doesn't exist!")
+    exit(-1)
+
+print("Generating {}/{} from {}/{} for arch:{}".format(outdir, outfile, indir, infile, arch))
+
 subprocess.run(
-        ["ld", "-r", "-b", "binary", "-o", str(outdir.joinpath(outfile)), infile],
+        [ld, "-r", "-b", "binary", "-m", "elf_" + arch, "-o", str(outdir.joinpath(outfile)), infile],
         cwd=str(indir))
 
-print("Generating {}/{} from {}/{}".format(outdir, outfile, indir, infile))

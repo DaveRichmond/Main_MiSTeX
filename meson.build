@@ -21,10 +21,11 @@ add_global_arguments('-DVDATE=@0@'.format(date.stdout().strip()), language: ['c'
 add_global_arguments('-Wno-narrowing', language: ['c', 'cpp'])
 
 # generate binary objects from binary png
-ld = find_program('mkbinary.py')
-png = generator(ld, 
+mkbin = find_program('mkbinary.py')
+ld = cc.cmd_array()[0]
+png = generator(mkbin, 
   output: '@BASENAME@.o',
-  arguments: ['@OUTPUT@', '@INPUT@'])
+  arguments: ['@OUTPUT@', '@INPUT@', ld, target_machine.cpu_family()])
 
 m_dep = cc.find_library('m', required: false)
 z_dep = dependency('zlib', version: '>=1.2.8')
