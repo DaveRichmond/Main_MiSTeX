@@ -44,6 +44,6 @@ if not pathlib.Path(ld).exists():
 print("Generating {}/{} from {}/{} for arch:{}".format(outdir, outfile, indir, infile, arch))
 
 subprocess.run(
-        [ld, "-r", "-b", "binary", "-m", "elf_" + arch, "-o", str(outdir.joinpath(outfile)), infile],
+        [ld, "-r", "-b", "binary", "-o", str(outdir.joinpath(outfile)), infile],
         cwd=str(indir))
 
