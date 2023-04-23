@@ -36,21 +36,25 @@ imlib_dep = cc.find_library('Imlib2', required: true)
 libco_inc = include_directories('lib/libco')
 libco = library('libco',
   'lib/libco/arm.c',
-  include_directories: libco_inc)
+  include_directories: libco_inc,
+  install: true)
 miniz_inc = include_directories('lib/miniz')
 miniz = library('miniz',
   'lib/miniz/miniz.c',
-  include_directories: miniz_inc)
+  include_directories: miniz_inc, 
+  install: true)
 md5_inc = include_directories('lib/md5')
 md5 = library('md5',
   'lib/md5/md5.c',
-  include_directories: md5_inc)
+  include_directories: md5_inc,
+  install: true)
 lzma_inc = include_directories('lib/lzma')
 lzma = library('lzma',
   'lib/lzma/Alloc.c', 'lib/lzma/CpuArch.c', 'lib/lzma/Delta.c', 
   'lib/lzma/LzFind.c', 'lib/lzma/LzmaDec.c', 'lib/lzma/LzmaEnc.c',
   'lib/lzma/LzmaLib.c', 'lib/lzma/Sort.c',
-  include_directories: lzma_inc)
+  include_directories: lzma_inc,
+  install: true)
 flac_inc = include_directories('lib/flac/include', 'lib/flac/src/include')
 flac = library('flac',
   'lib/flac/src/bitmath.c', 'lib/flac/src/bitreader.c', 'lib/flac/src/bitwriter.c',
@@ -59,22 +63,23 @@ flac = library('flac',
   'lib/flac/src/metadata_iterators.c', 'lib/flac/src/metadata_object.c', 'lib/flac/src/stream_decoder.c',
   'lib/flac/src/stream_encoder.c', 'lib/flac/src/stream_encoder_framing.c', 'lib/flac/src/window.c',
   dependencies: m_dep,
-  include_directories: flac_inc)
+  include_directories: flac_inc,
+  install: true)
 chdr_inc = include_directories('lib/libchdr/include')
 chdr = library('chdr', 
   'lib/libchdr/libchdr_bitstream.c', 'lib/libchdr/libchdr_cdrom.c', 
   'lib/libchdr/libchdr_chd.c', 'lib/libchdr/libchdr_flac.c',
   'lib/libchdr/libchdr_huffman.c',
   link_with: [flac, lzma, miniz],
-  include_directories: [miniz_inc, chdr_inc, flac_inc, lzma_inc])
-bt_inc = include_directories('lib/bluetooth')
+  include_directories: [miniz_inc, chdr_inc, flac_inc, lzma_inc],
+  install: true)
 
 logo_src = png.process('logo.png')
 
 inc = [
   libco_inc, miniz_inc, md5_inc,
   lzma_inc, chdr_inc,
-  flac_inc, bt_inc
+  flac_inc
 ]
 support = ['support/arcade/buffer.cpp', 'support/arcade/mra_loader.cpp', 'support/archie/archie.cpp',
   'support/c64/c64.cpp', 'support/chd/mister_chd.cpp', 'support/megacd/megacd.cpp', 
@@ -99,4 +104,5 @@ executable('MiSTeX',
   logo_src,
   include_directories: inc,
   dependencies: [z_dep, gpio_dep, bluetooth_dep, imlib_dep],
-  link_with: [libco, miniz, md5, lzma, flac, chdr])
+  link_with: [libco, miniz, md5, lzma, flac, chdr],
+  install: true)
