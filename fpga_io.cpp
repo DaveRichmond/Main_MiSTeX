@@ -119,9 +119,13 @@ int fpga_io_init()
 	if (!gpio_chip) goto err;
 
 	gpio_line_fpga_reset = gpiod_chip_find_line(gpio_chip, GPIO_PIN_FPGA_RESET);
+	printf("Init GPIO (%s): #%d", GPIO_PIN_FPGA_RESET, gpiod_line_offset(gpio_line_fpga_reset));
 	gpio_line_fpga_en    = gpiod_chip_find_line(gpio_chip, GPIO_PIN_FPGA_EN);
+	printf("Init GPIO (%s): #%d", GPIO_PIN_FPGA_EN, gpiod_line_offset(gpio_line_fpga_en));
 	gpio_line_osd_en     = gpiod_chip_find_line(gpio_chip, GPIO_PIN_OSD_EN);
+	printf("Init GPIO (%s): #%d", GPIO_PIN_OSD_EN, gpiod_line_offset(gpio_line_osd_en));
 	gpio_line_io_en      = gpiod_chip_find_line(gpio_chip, GPIO_PIN_IO_EN);
+	printf("Init GPIO (%s): #%d", GPIO_PIN_IO_EN, gpiod_line_offset(gpio_line_io_en));
 	if (!gpio_line_fpga_en     ||
 	    !gpio_line_osd_en      ||
 		!gpio_line_io_en       ||
